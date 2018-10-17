@@ -1,21 +1,22 @@
-  PShape mountain, ground, ground1, ground2;       //variables for mountain
-  PShape grass, g, g1, g2;       //grass
+  PShape mountain, ground, ground1, ground2;       //variables for created shapes
+  PShape grass, g, g1, g2;       
   PShape stream, s1, s2, s3, s4;
+  PShape butterfly, w1, w2, w3, w4, m;
   int yaxis = 1;                         //gradient background
   int xaxis = 2;
   color b1, b2, c1, c2;
-  int e_xLoc;               // passed parameters in mushroom top
-  int e_yLoc;
-  int e2_xLoc; 
-  int e2_yLoc;
-  float x = 150;             // to move gate
+  int e_xLoc, e_yLoc;               // passed parameters in mushroom top
+  int e2_xLoc, e2_yLoc;         
   int[] move= new int[20];
+  boolean fuzzy = true;      // to switch screens
+  boolean clear = false;
+  
+  
 
   
 void setup(){
   size(600, 600);
 
-  
   // created shape for the grass
   grass = createShape(GROUP);
     g = createShape(QUAD, 300, 300, 300, 600, 600, 600, 600, 300);
@@ -65,10 +66,34 @@ void setup(){
   stream.addChild(s3);
   stream.addChild(s4);
   
+  //butterfly
+  butterfly = createShape(GROUP);
+    w1 = createShape(QUAD, 40, 55, 66, 50, 55, 20, 20, 6);
+    w1.setFill(color(230, 109, 240));
+    w1.setStroke(0);
+    w2 = createShape(QUAD, 40, 61, 66, 50, 55, 73, 30, 86);
+    w2.setFill(color(230, 109, 240));
+    w2.setStroke(0);
+    w3 = createShape(QUAD, 100, 61, 74, 50, 85, 73, 110, 86);
+    w3.setFill(color(230, 109, 240));
+    w3.setStroke(0);
+    w4 = createShape(QUAD, 100, 55, 74, 50, 85, 20, 115, 6);
+    w4.setFill(color(230, 109, 240));
+    w4.setStroke(0);
+    m = createShape(ELLIPSE, 70, 50, 5, 50);
+    m.setFill(color(224, 240, 109));
+    m.setStroke(3);
+  butterfly.addChild(w1);
+  butterfly.addChild(w2);
+  butterfly.addChild(w3);
+  butterfly.addChild(w4);
+  butterfly.addChild(m);
+    
+  
   b1 = color(255);           //gradient colors
   b2 = color(0);
   c1 = color(69, 100, 116);
-  c2 = color(40, 51, 90);
+  c2 = color(47, 178, 146);
   //noLoop();                  
   
   //stars
@@ -82,19 +107,17 @@ for(int i = 0; i<20; i++){
       move[i] = int(random(-200, 0));
    rect(i*40, height/2, 5, 20);             // 40 controls the distance between the raindrops
   }
-
  println(move);
- 
-  
+
 }
 
 void draw(){
   
+ if (fuzzy){
+  
  //background
  gradient(0, 0, width/2, height, b1, b2, xaxis);
  gradient(0, 0, 600, 300, c1, c2, yaxis);
- 
-  
  
  //grass
  shape(grass);
@@ -125,6 +148,11 @@ void draw(){
  pushMatrix();
  translate(-34, 83);
  details4();
+ popMatrix(); 
+ pushMatrix();
+ translate(-300, -50);
+ scale(1.5);
+ mushroom();
  popMatrix();
  
  //trees
@@ -143,8 +171,6 @@ void draw(){
  branches();
  popMatrix();
  
-
-  
  //mountain
  shape(mountain);
  pushMatrix();
@@ -184,6 +210,7 @@ void draw(){
  translate(-270, -230);
  rock();
  popMatrix();
+
   
 //stream momvement
 
@@ -219,9 +246,16 @@ void draw(){
   }
   popMatrix();
 
-  //sparkles
+ pushMatrix();
+ translate(-245, -160);
+ scale(1.2);
+ rock();
+ popMatrix();
+ 
+ //sparkles
  
  pushMatrix();
+ noStroke();
  fill(0,10);
  rect(0, 0, width, height);
   for (int i = 50; i < 500; i += random(50, 50)) {
@@ -233,22 +267,219 @@ void draw(){
   }
  popMatrix();
  
+ pushMatrix();
+ fill(0,10);
+ rect(0, 0, width, height);
+  for (int i = 50; i < 500; i += random(50, 50)) {
+    fill(246, 247, 200);
+    frameRate(7);
+    translate(230, 50);
+    scale(.7);
+    ellipse(random(width/2), random(height), 7, 7);  
+  }
+ popMatrix();
+ 
  pushMatrix(); 
  fill(0,10);
  rect(0, 0, width, height); 
   for (int i = 50; i < 500; i += random(50, 50)) {
     fill(246, 247, 200);
     frameRate(3);
-    translate(240, 100);
+    translate(260, 100);
+    scale(.8);
     ellipse(random(width/3), random(height/2), 20, 20); 
   }
   popMatrix();
  
-  gate1();
+  gate();
  
+  // glowing orb
+  noStroke();
+  fill(215, 237, 242);
+  ellipse(mouseX,mouseY,45,45);
+  filter( BLUR, 6 );
+  fill(120, 249, 252);
+  ellipse(mouseX,mouseY,30,30);
+  
+  }
+  
+  if (clear){
+  
+ //background
+ gradient(0, 0, width/2, height, b1, b2, xaxis);
+ gradient(0, 0, 600, 300, c1, c2, yaxis);
+ 
+ //grass
+ shape(grass);
+ 
+ //objects on grass
+ 
+ mushroom(); 
+ pushMatrix();
+ translate(-110, -50);
+ mushroom();
+ popMatrix();
+ rock();
+ pushMatrix();
+ translate(-180, -150);
+ rock();
+ popMatrix();
+ pushMatrix();
+ translate(15, -180);
+ rock();
+ popMatrix();
+ 
+ //grass details
+ details4();
+ pushMatrix();
+ translate(-100, -50);
+ details4();
+ popMatrix();
+ pushMatrix();
+ translate(-34, 83);
+ details4();
+ popMatrix(); 
+ pushMatrix();
+ translate(-300, -50);
+ scale(1.5);
+ mushroom();
+ popMatrix();
+ 
+ //trees
+ trunks();
+ branches();
+ pushMatrix();
+ translate(-75, 10);
+ branches();
+ popMatrix();
+ pushMatrix();
+ translate(77, 50);
+ branches();
+ popMatrix();
+ pushMatrix();
+ translate(95, 170);
+ branches();
+ popMatrix();
+ 
+ //sparkles
+ 
+ pushMatrix();
+ noStroke();
+ fill(0,10);
+ rect(0, 0, width, height);
+  for (int i = 50; i < 500; i += random(50, 50)) {
+    fill(246, 247, 200);
+    frameRate(4);
+    translate(300, 50);
+    scale(.7);
+    ellipse(random(width/10), random(height), 7, 7);  
+  }
+ popMatrix();
+ 
+ pushMatrix();
+ fill(0,10);
+ rect(0, 0, width, height);
+  for (int i = 50; i < 500; i += random(50, 50)) {
+    fill(246, 247, 200);
+    frameRate(4);
+    translate(300, 100);
+    scale(.7);
+    ellipse(random(width/3), random(height), 7, 7);  
+  }
+ popMatrix();
+ 
+ //mountain
+ shape(mountain);
+ pushMatrix();
+ translate(6, 50);
+ ground.setFill(color(100, 66, 31));
+ ground1.setFill(color(100, 66, 31));
+ ground2.setFill(color(100, 66, 31));
+ shape(mountain);
+ popMatrix();
+  
+ // mountain details
+ details();
+ pushMatrix();
+ translate(width/2, height/2.5);
+ rotate(PI/5.0);
+ details();
+ popMatrix();
+ pushMatrix();
+ translate(width/1, height/2);
+ rotate(PI/2);
+ details();
+ popMatrix();
+ details2();
+ details3();
+ pushMatrix();
+ translate(-300, 40);
+ details4();
+ popMatrix();
+ pushMatrix();
+ translate(-425, -55);
+ details4();
+ popMatrix();
+ 
+ shape(stream);
+ 
+ pushMatrix();
+ translate(-270, -230);
+ rock();
+ popMatrix();
 
+  
+//stream momvement
+
+  pushMatrix();
+ // loop();
+  noStroke();
+  fill(255);
+  translate(30, 240);
+  scale(1, .2);
+  rotate(PI/-4);
+  for(int i = 0; i<10; i++){
+    move[i]= move[i] +4;
+    rect(i*10, move[i], 4, 200);
+    if (move[i] >= height/10){
+      move[i] = int(random(-100,0));
+    }
+  }
+  popMatrix();
+  
+  pushMatrix();
+ // loop();
+  noStroke();
+  fill(255);
+  translate(440, 440);
+  scale(.3, .2);
+  rotate(PI/-2.5);
+  for(int i = 0; i<10; i++){
+    move[i]= move[i] +4;
+    rect(i*10, move[i], 4, 200);
+    if (move[i] >= height/50){
+      move[i] = int(random(-100,0));
+    }
+  }
+  popMatrix();
+
+ pushMatrix();
+ translate(-245, -160);
+ scale(1.2);
+ rock();
+ popMatrix();
+ 
+//butterfly
+    pushMatrix();
+    rotate(PI/4);
+    scale(.5);
+    shape(butterfly, mouseX+600, mouseY-300);
+    popMatrix();
+  
+ gate();
+
+  }
 }
-
 
 //function for gradient background
 void gradient(int x, int y, float w, float h, color c1, color c2, int axis){
@@ -464,28 +695,13 @@ void branches(){
 }
 
 
-void gate1(){       // function for the whole gate
-  bars();
-  bars2();
-  top();
-}
-  
-void gate2(){
+void gate(){       // function for the whole gate
   pushMatrix();
   translate(300,0);
   bars();
   bars2();
-  top2();
-  popMatrix();  
-}
-
-void keyPressed(){
-  if(key == '1'){
-    x = x - 2;
-  }
-  if(key == '2'){
-    x = x + 2;  
-  }
+  top();
+  popMatrix();
 }
 
 void top(){        // top of the left gate
@@ -535,7 +751,7 @@ void bars2(){     // horizontal bars of the gate
 
 void bars(){    // bars of the gate
    stroke(240, 224, 77);
-   strokeWeight(5);
+   strokeWeight(4);
    line(20, 200, 20, 580);
    pushMatrix();
    translate(20,0);
@@ -589,4 +805,15 @@ void bars(){    // bars of the gate
    translate(260,0);
    line(20, 200, 20, 580);
    popMatrix();
+}
+
+void keyPressed(){
+  if (key == '1'){
+    fuzzy = true;
+    clear = false;
+  }
+  else if (key == '2'){
+    fuzzy = false;
+    clear = true;
+  }
 }
