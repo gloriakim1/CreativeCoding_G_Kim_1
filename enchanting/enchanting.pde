@@ -1,19 +1,19 @@
   PShape mountain, ground, ground1, ground2;       //variables for created shapes
   PShape grass, g, g1, g2;       
   PShape stream, s1, s2, s3, s4;
+  PShape stream2, s2_1, s2_2;
   PShape butterfly, w1, w2, w3, w4, m;
   int yaxis = 1;                         //gradient background
   int xaxis = 2;
   color b1, b2, c1, c2;
-  int e_xLoc, e_yLoc;               // passed parameters in mushroom top
-  int e2_xLoc, e2_yLoc;         
   int[] move= new int[20];
   boolean fuzzy = true;      // to switch screens
   boolean clear = false;
   
+  //passed parameters in mushroom top and sunlight
+  //array used for moving stream 
   
 
-  
 void setup(){
   size(600, 600);
 
@@ -65,6 +65,17 @@ void setup(){
   stream.addChild(s2);
   stream.addChild(s3);
   stream.addChild(s4);
+  
+  // stream 2
+  stream2 = createShape(GROUP);
+    s2_1 = createShape(QUAD, 520, 300, 420, 350, 470, 350, 570, 300);
+    s2_1.setFill(color(129, 233, 250));
+    s2_1.setStroke(false);
+    s2_2 = createShape(QUAD, 420, 350, 470, 350, 460, 500, 410, 500);
+    s2_2.setFill(color(129, 233, 250));
+    s2_2.setStroke(false);
+  stream2.addChild(s2_1);
+  stream2.addChild(s2_2);
   
   //butterfly
   butterfly = createShape(GROUP);
@@ -121,6 +132,8 @@ void draw(){
  
  //grass
  shape(grass);
+ 
+ shape(stream2);
  
  //objects on grass
  
@@ -205,6 +218,7 @@ void draw(){
  popMatrix();
  
  shape(stream);
+
  
  pushMatrix();
  translate(-270, -230);
@@ -312,13 +326,11 @@ void draw(){
  //grass
  shape(grass);
  
+ shape(stream2);
+ 
  //objects on grass
  
  mushroom(); 
- pushMatrix();
- translate(-110, -50);
- mushroom();
- popMatrix();
  rock();
  pushMatrix();
  translate(-180, -150);
@@ -388,6 +400,8 @@ void draw(){
   }
  popMatrix();
  
+ sunlight(200, 300, 500, 600);
+ 
  //mountain
  shape(mountain);
  pushMatrix();
@@ -427,20 +441,18 @@ void draw(){
  translate(-270, -230);
  rock();
  popMatrix();
-
   
 //stream momvement
 
   pushMatrix();
- // loop();
   noStroke();
   fill(255);
   translate(30, 240);
-  scale(1, .2);
-  rotate(PI/-4);
+  scale(1, .5);
+  rotate(PI/-2.5);
   for(int i = 0; i<10; i++){
     move[i]= move[i] +4;
-    rect(i*10, move[i], 4, 200);
+    rect(i*5, move[i], 4, 200);
     if (move[i] >= height/10){
       move[i] = int(random(-100,0));
     }
@@ -448,7 +460,6 @@ void draw(){
   popMatrix();
   
   pushMatrix();
- // loop();
   noStroke();
   fill(255);
   translate(440, 440);
@@ -462,6 +473,26 @@ void draw(){
     }
   }
   popMatrix();
+  
+  pushMatrix();
+  noStroke();
+  fill(255);
+  translate(500, 315);
+  rotate(PI/2.8);
+  scale(.5, .1);
+  for(int i = 0; i<7; i++){
+    move[i]= move[i] +4;
+    rect(i*5, move[i], 4, 400);
+    if (move[i] >= height/50){
+      move[i] = int(random(-300,0));
+    }
+  }
+  popMatrix();
+  
+  pushMatrix();
+  translate(-110, -50);
+  mushroom();
+  popMatrix();
 
  pushMatrix();
  translate(-245, -160);
@@ -473,10 +504,8 @@ void draw(){
     pushMatrix();
     rotate(PI/4);
     scale(.5);
-    shape(butterfly, mouseX+600, mouseY-300);
+    shape(butterfly, mouseX+200, mouseY-300);
     popMatrix();
-  
- gate();
 
   }
 }
@@ -677,7 +706,7 @@ void branches(){
   vertex(480, 250);
   vertex(470, 245);
   vertex(475, 230);
-  vertex(480, 190);
+  vertex(440, 220);
   endShape();
   beginShape();        //branch 5
   vertex(480, 250);
@@ -690,7 +719,7 @@ void branches(){
   vertex(480, 250);
   vertex(482, 245);
   vertex(484, 230);
-  vertex(490, 210);
+  vertex(500, 220);
   endShape();
 }
 
@@ -805,6 +834,15 @@ void bars(){    // bars of the gate
    translate(260,0);
    line(20, 200, 20, 580);
    popMatrix();
+}
+
+void sunlight(int s1_width, int s1_height, int s2_width, int s2_height){
+  fill(243, 245, 180, 100);
+  noStroke();
+  //triangle(0, 0, 300, 200, 200, 500);
+ // triangle(0, 0, 500, 100, 450, 130);
+  triangle(600, 0, s1_width, s1_height, 400, 500);
+  triangle(600, 0, s2_width, s2_height, 550, 600);
 }
 
 void keyPressed(){
