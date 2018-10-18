@@ -1,4 +1,5 @@
   PShape mountain, ground, ground1, ground2;       //variables for created shapes
+  PShape mountain2, m1, m2, m3;
   PShape grass, g, g1, g2;       
   PShape stream, s1, s2, s3, s4;
   PShape stream2, s2_1, s2_2;
@@ -46,6 +47,21 @@ void setup(){
   mountain.addChild(ground);
   mountain.addChild(ground1);
   mountain.addChild(ground2);
+  
+   mountain2 = createShape(GROUP);
+    m1 = createShape(QUAD, -10, 600, 556, 600, 296, 300, -30, 250);     
+    m1.setFill(color(129, 103, 70));
+    m1.setStroke(false);
+    m2 = createShape(TRIANGLE, 396, 450, 506, 470, 556, 650);
+    m2.setFill(color(129, 103, 70));
+    m2.setStroke(false);
+    m3 = createShape(TRIANGLE, 296, 300, 326, 300, 306, 315);
+    m3.setFill(color(129, 103, 70));
+    m3.setStroke(false);
+  mountain2.addChild(m1);
+  mountain2.addChild(m2);
+  mountain2.addChild(m3);
+  
   
   // stream
   stream = createShape(GROUP);
@@ -186,13 +202,7 @@ void draw(){
  
  //mountain
  shape(mountain);
- pushMatrix();
- translate(6, 50);
- ground.setFill(color(100, 66, 31));
- ground1.setFill(color(100, 66, 31));
- ground2.setFill(color(100, 66, 31));
- shape(mountain);
- popMatrix();
+ shape(mountain2);
   
  // mountain details
  details();
@@ -404,13 +414,7 @@ void draw(){
  
  //mountain
  shape(mountain);
- pushMatrix();
- translate(6, 50);
- ground.setFill(color(100, 66, 31));
- ground1.setFill(color(100, 66, 31));
- ground2.setFill(color(100, 66, 31));
- shape(mountain);
- popMatrix();
+ shape(mountain2);
   
  // mountain details
  details();
